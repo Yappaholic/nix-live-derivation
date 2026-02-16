@@ -24,7 +24,7 @@ FetcherType :: enum {
 	fetchFromGitHub,
 	fetchFromBitBucket,
 	fetchFromGitLab,
-	fetchFromSourceHut,
+	fetchFromSourcehut,
 	fetchGit,
 }
 
@@ -72,7 +72,7 @@ get_fetcher :: proc(source: string) -> (res: FetcherType) {
 	case "gitlab":
 		res = .fetchFromGitLab
 	case "sourcehut":
-		res = .fetchFromSourceHut
+		res = .fetchFromSourcehut
 	case:
 		res = .fetchGit
 	}

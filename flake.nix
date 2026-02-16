@@ -11,9 +11,11 @@
     flake-utils.lib.eachDefaultSystem (
       system: let
         pkgs = nixpkgs.legacyPackages.${system};
+        nixLiveDerivation = pkgs.callPackage ./pkg/default.nix {inherit pkgs;};
       in {
+        mkLive = package: gitString: pkgs.callPackage ./nix/mklive.nix {inherit pkgs package gitString nixLiveDerivation;};
         packages = rec {
-          nix-live-derivation = pkgs.callPackage ./pkg/default.nix {inherit pkgs;};
+          nix-live-derivation = nixLiveDerivation;
           default = nix-live-derivation;
         };
       }
