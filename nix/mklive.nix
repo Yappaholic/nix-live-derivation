@@ -6,7 +6,7 @@
   gitString,
   nixLiveDerivation,
 }: let
-  newSrcText = pkgs.callCommand "get-new-source" {} ''
+  newSrcText = pkgs.runCommand "get-new-source" {} ''
     ${nixLiveDerivation}/bin/nix-live-derivation ${gitString}
   '';
   newSrc = builtins.fromJSON newSrcText;
