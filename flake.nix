@@ -13,7 +13,13 @@
         pkgs = nixpkgs.legacyPackages.${system};
         nixLiveDerivation = pkgs.callPackage ./pkg/default.nix {inherit pkgs;};
       in {
-        mkLive = package: gitString: pkgs.callPackage ./nix/mklive.nix {inherit pkgs package gitString nixLiveDerivation;};
+        mkLive = package: gitString:
+          pkgs.callPackage ./nix/mklive.nix {
+            pkgs = pkgs;
+            package = package;
+            gitString = gitString;
+            nixLiveDerivation = nixLiveDerivation;
+          };
         packages = rec {
           nix-live-derivation = nixLiveDerivation;
           default = nix-live-derivation;
