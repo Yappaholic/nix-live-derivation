@@ -7,9 +7,9 @@
   nixLiveDerivation,
 }: let
   newSrcText = pkgs.runCommand "get-new-source" {} ''
-    ${nixLiveDerivation}/bin/nix-live-derivation ${gitString}
+    ${nixLiveDerivation}/bin/nix-live-derivation ${gitString} > $out/live-derivation-info.json
   '';
-  newSrc = builtins.fromJSON newSrcText;
+  newSrc = builtins.fromJSON (builtins.readFile "${newSrcText}/live-derivation-info.json");
   fetcher = import ./get-fetcher.nix {
     inherit pkgs;
     fetcherString = newSrc.fetcher;
