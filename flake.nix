@@ -12,15 +12,22 @@
       system: let
         pkgs = nixpkgs.legacyPackages.${system};
         nixLiveDerivation = pkgs.callPackage ./pkg/default.nix {inherit pkgs;};
+        mkLive = package: gitString:
+          pkgs.callPackage ./nix/mklive.nix {
+            pkgs = pkgs;
+            package = package;
+            gitString = gitString;
+            nixLiveDerivation = nixLiveDerivation;
+          };
       in {
         lib = {
-          mkLive = package: gitString:
-            pkgs.callPackage ./nix/mklive.nix {
-              pkgs = pkgs;
-              package = package;
-              gitString = gitString;
-              nixLiveDerivation = nixLiveDerivation;
-            };
+          mkLive = mkLive;
+        };
+        checks = {
+          get-derivation-info = pkgs.runCommand "get-derivation-info" {} ''
+            ${nixLiveDerivation}/bin/nix-live-derivation "github:Yappaholic/nix-live-derivation" > $out
+            echo "All good" > $out
+          '';
         };
         packages = rec {
           nix-live-derivation = nixLiveDerivation;
