@@ -87,7 +87,16 @@ generate_sha256 :: proc(url: string, get_rev := false) -> (string, string) {
 	defer os2.file_info_delete(tmp_file_info, context.allocator)
 	process, _ := os2.process_start(
 		{
-			command = {"nix", "flake", "prefetch", url, "--json", "--no-pretty"},
+			command = {
+				"nix",
+				"--extra-experimental-features",
+				"nix-command flakes",
+				"flake",
+				"prefetch",
+				url,
+				"--json",
+				"--no-pretty",
+			},
 			stdout = tmp_file,
 			stdin = nil,
 			stderr = os2.stderr,
