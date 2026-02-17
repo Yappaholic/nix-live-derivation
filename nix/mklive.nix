@@ -7,6 +7,7 @@
   nixLiveDerivation,
 }: let
   newSrcText = pkgs.runCommand "get-new-source" {} ''
+    export PATH=$PATH:${pkgs.nix}/bin
     mkdir -p $out
     ${nixLiveDerivation}/bin/nix-live-derivation ${gitString} > $out/live-derivation-info.json
   '';
