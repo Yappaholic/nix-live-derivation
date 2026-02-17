@@ -7,6 +7,7 @@
   nixLiveDerivation,
 }: let
   newSrcText = pkgs.runCommand "get-new-source" {} ''
+    mkdir -p $out
     ${nixLiveDerivation}/bin/nix-live-derivation ${gitString} > $out/live-derivation-info.json
   '';
   newSrc = builtins.fromJSON (builtins.readFile "${newSrcText}/live-derivation-info.json");
